@@ -70,5 +70,5 @@ jobs:
           kubectl cluster-info
       - name: Configure kubeconfig for Kind cluster
         run: |
-           kubectl cluster-info --context kind-mycluster
+           kubectl cluster-info --context kind-my-cluster
            kubectl get nodes
