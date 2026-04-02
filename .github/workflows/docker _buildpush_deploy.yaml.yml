@@ -50,7 +50,25 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Install Kind & Kubectl
+        run: |
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
+          curl -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
       - name: Install Helm
         uses: azure/setup-helm@v4
         with:
           version: v3.14.0
+
+      - name: Create Kind Cluster
+        run: |
+          kind create cluster --name my-cluster
+          kubectl cluster-info
+      - name: Configure kubeconfig for Kind cluster
+        run: |
+           kubectl cluster-info --context kind-mycluster
+           kubectl get nodes
