@@ -12,21 +12,21 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
       tag: ${{ steps.tag.outputs.NEW_TAG }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+   steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
           
-      - name: Generate New Tag
-        id: tag
-        run: |
-          TAG=$(curl -s https://hub.docker.com/v2/repositories/${{ secrets.DOCKERHUB_USERNAME }}/k8s-rating-frontend/tags/?page_size=1 | jq -r '.results[0].name' || echo "cicdV0")
-          NUM=$(echo $TAG | sed 's/[^0-9]*//g')
-          NEXT=$((NUM + 1))
-          NEW_TAG="cicdV$NEXT"
-          echo "NEW_TAG=$NEW_TAG"
-          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_OUTPUT
+    - name: Generate New Tag
+      id: tag
+      run: |
+        TAG=$(curl -s https://hub.docker.com/v2/repositories/${{ secrets.DOCKERHUB_USERNAME }}/k8s-rating-frontend/tags/?page_size=1 | jq -r '.results[0].name' || echo "cicdV0")
+        NUM=$(echo $TAG | sed 's/[^0-9]*//g')
+        NEXT=$((NUM + 1))
+        NEW_TAG="cicdV$NEXT"
+        echo "NEW_TAG=$NEW_TAG"
+        echo "NEW_TAG=$NEW_TAG" >> $GITHUB_OUTPUT
         // run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
-      - name: Log in to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+    - name: Log in to Docker Hub
+      run: |
+        echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
