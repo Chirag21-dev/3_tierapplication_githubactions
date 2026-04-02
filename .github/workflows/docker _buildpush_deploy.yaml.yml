@@ -11,7 +11,7 @@ jobs:
 
       runs-on: ubuntu-latest
       outputs:
-      tag: ${{ steps.tag.outputs.NEW_TAG }}
+        tag: ${{ steps.tag.outputs.NEW_TAG }}
    steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
         NEW_TAG="cicdV$NEXT"
         echo "NEW_TAG=$NEW_TAG"
         echo "NEW_TAG=$NEW_TAG" >> $GITHUB_OUTPUT
-        // run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
     - name: Log in to Docker Hub
       run: |
