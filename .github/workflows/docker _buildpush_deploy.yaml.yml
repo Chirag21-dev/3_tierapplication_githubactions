@@ -75,7 +75,7 @@ jobs:
 
       - name: Helm Deploy
         run: |
-          helm upgrade --install rating-app  \
+          helm upgrade --install rating-app  ./rating-app\
             --namespace project4 \
             --create-namespace \
             --set frontend.image=${{ secrets.DOCKERHUB_USERNAME }}/k8s-rating-frontend:${{ needs.build-and-push.outputs.tag }} \
