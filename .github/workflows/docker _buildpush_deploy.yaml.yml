@@ -38,6 +38,14 @@ jobs:
           sudo apt-get update -q
           sudo apt-get install -y trivy
 
+      - name: Run Trivy scan on frontend
+        run: |
+          trivy image --exit-code 1 --severity CRITICAL --ignore-unfixed --format table ${{ secrets.DOCKERHUB_USERNAME }}/k8s-rating-frontend:${{ steps.tag.outputs.NEW_TAG }}
+
+      - name: Run Trivy scan on backend
+        run: |
+          trivy image --exit-code 1 --severity CRITICAL --ignore-unfixed --format table ${{ secrets.DOCKERHUB_USERNAME }}/backend-rating-app:${{ steps.tag.outputs.NEW_TAG }}
+
       
       - name: Push Docker Image
         run: |
