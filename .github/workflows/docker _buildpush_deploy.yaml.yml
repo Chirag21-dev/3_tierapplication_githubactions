@@ -46,7 +46,15 @@ jobs:
         run: |
           trivy image --exit-code 1 --severity CRITICAL --ignore-unfixed --format table ${{ secrets.DOCKERHUB_USERNAME }}/backend-rating-app:${{ steps.tag.outputs.NEW_TAG }}
 
-      
+      - name: SonarQube Scan (Frontend + Backend)
+        uses: sonarsource/sonarqube-scan-action@v2
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=my-three-tier-app
+            -Dsonar.sources=Frontend,Backend
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       - name: Push Docker Image
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/k8s-rating-frontend:${{ steps.tag.outputs.NEW_TAG }}
